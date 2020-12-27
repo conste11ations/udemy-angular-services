@@ -1,27 +1,28 @@
-# MyFirstApp
+If you're using Angular 6+ (check your package.json to find out), you can provide application-wide services in a different way.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
+Instead of adding a service class to the providers[] array in AppModule, you can set the following config in @Injectable() :
 
-## Development server
+```
+@Injectable({providedIn: 'root'})
+export class MyService { ... }
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This is exactly the same as:
 
-## Code scaffolding
+```
+export class MyService { ... }
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+and
 
-## Build
+```
+import { MyService } from './path/to/my.service';
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+@NgModule({
+    ...
+    providers: [MyService]
+})
+export class AppModule { ... }
+```
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Using this new syntax is completely optional, the traditional syntax (using providers[] ) will still work. The "new syntax" does offer one advantage though: Services can be loaded lazily by Angular (behind the scenes) and redundant code can be removed automatically. This can lead to a better performance and loading speed - though this really only kicks in for bigger services and apps in general.
